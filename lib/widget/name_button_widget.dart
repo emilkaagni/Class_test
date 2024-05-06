@@ -10,25 +10,72 @@ class NameButtonWidget extends StatefulWidget {
 }
 
 class _NameButtonState extends State<NameButtonWidget> {
-  bool _isClicked = false;
-
+  bool isVisible = true;
+  bool isFirstClick = true;
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        setState(() {
-          _isClicked = !_isClicked;
-        });
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: _isClicked
-            ? const Color.fromARGB(255, 233, 220, 82)
-            : const Color.fromARGB(255, 231, 18, 228),
-      ),
-      child: Text(
-        widget.char,
-        style: const TextStyle(fontSize: 50),
-      ),
-    );
+    return Visibility(
+        visible: isVisible,
+        child: ElevatedButton(
+          onPressed: () {
+            setState(() {
+              if (isFirstClick) {
+                // Change color on first click
+                isFirstClick = false;
+              } else {
+                // Disappear on second click
+                isVisible = false;
+              }
+            });
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: isFirstClick
+                ? const Color.fromARGB(255, 233, 220, 82)
+                : const Color.fromARGB(255, 231, 18, 228),
+          ),
+          child: Text(
+            widget.char,
+            style: const TextStyle(fontSize: 50),
+          ),
+        ));
   }
 }
+
+// class NameButtonWidget extends StatefulWidget {
+//   final String text;
+//   const NameButtonWidget({super.key, required this.text});
+//   @override
+//   _NameButtonState createState() => _NameButtonState();
+// }
+
+// class _NameButtonState extends State<NameButtonWidget> {
+//   bool isVisible = true;
+//   bool isFirstClick = true;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Visibility(
+//       visible: isVisible,
+//       child: ElevatedButton(
+//         onPressed: () {
+//           setState(() {
+//             if (isFirstClick) {
+//               // Change color on first click
+//               isFirstClick = false;
+//             } else {
+//               // Disappear on second click
+//               isVisible = false;
+//             }
+//           });
+//         },
+//         style: ButtonStyle(
+//           backgroundColor: MaterialStateProperty.all<Color>(
+//             isFirstClick
+//                 ? Colors.blue
+//                 : Colors.green, // Change color on first click
+//           ),
+//         ),
+//         child: Text(widget.text),
+//       ),
+//     );
+//   }
+// }
